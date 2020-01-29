@@ -32,4 +32,5 @@ cmake ..\
     -DCMAKE_MACOSX_RPATH=ON
 
 make -j${CPU_COUNT}
+make test
 make install
