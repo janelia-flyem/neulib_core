@@ -2,6 +2,7 @@
 #include <map>
 #include <mutex>
 #include <tuple>
+#include <functional>
 
 namespace neulib
 {
@@ -36,4 +37,4 @@ std::function<T(Args...)> Memoize(T (*fn)(Args...))
   };
 }
 
-} // namespace neutu
+} // namespace neulib
