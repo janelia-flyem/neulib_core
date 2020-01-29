@@ -24,7 +24,7 @@ TEST(core, utilities)
   }
 
   {
-    ASSERT_EQ("0x0", neulib::ToString(0x0));
+    ASSERT_EQ("0x1", neulib::ToString((void*)(1)));
   }
 
   {
