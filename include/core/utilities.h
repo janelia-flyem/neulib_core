@@ -2,6 +2,7 @@
 #include <map>
 #include <mutex>
 #include <tuple>
+#include <functional>
 
 namespace neulib
 {
