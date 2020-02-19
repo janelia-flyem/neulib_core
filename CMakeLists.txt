@@ -4,8 +4,10 @@ project(neucore)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_library(neucore SHARED src/utilities.cpp)
+
 target_include_directories(neucore PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 install(TARGETS neucore LIBRARY DESTINATION lib)
