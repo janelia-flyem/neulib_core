@@ -18,6 +18,32 @@ void Assign(T *out, const T &v)
   }
 }
 
+template<typename T>
+struct ToUnsignedType {
+};
+
+template<>
+struct ToUnsignedType<int>
+{
+  using type = unsigned int;
+};
+
+template<>
+struct ToUnsignedType<int64_t>
+{
+  using type = uint64_t;
+};
+
+template <typename T>
+typename ToUnsignedType<T>::type UnsignedCrop(const T &v)
+{
+  if (v < 0) {
+    return typename ToUnsignedType<T>::type(0);
+  }
+
+  return typename ToUnsignedType<T>::type(v);
+}
+
 std::string ToString(const void *p);
 
 namespace {

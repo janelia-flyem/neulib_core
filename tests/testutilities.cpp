@@ -28,6 +28,14 @@ TEST(core, utilities)
   }
 
   {
+    ASSERT_EQ(1, neulib::UnsignedCrop(1));
+    ASSERT_EQ(0, neulib::UnsignedCrop(-1));
+
+    ASSERT_EQ(0, neulib::UnsignedCrop(int64_t(-1)));
+    ASSERT_EQ(214748364789llu, neulib::UnsignedCrop(int64_t(214748364789ll)));
+  }
+
+  {
     auto memo = neulib::Memoize(fn);
 
     ASSERT_EQ(1, memo(0));
