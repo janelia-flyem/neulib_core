@@ -6,7 +6,10 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_library(neucore SHARED src/utilities.cpp)
+add_library(neucore SHARED 
+                src/utilities.cpp 
+                src/stringbuilder.cpp
+                src/sharedresourcepool.cpp)
 
 target_include_directories(neucore PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
