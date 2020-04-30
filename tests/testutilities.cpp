@@ -9,6 +9,12 @@ int fn(int s) {
   return ++count;
 }
 
+int fn2(std::string s) {
+  static int count = 0;
+
+  return count + s.size();
+}
+
 TEST(core, utilities)
 {
   {
@@ -50,6 +56,13 @@ TEST(core, utilities)
     ASSERT_EQ(4, fn(0));
     ASSERT_EQ(1, memo(0));
     ASSERT_EQ(3, memo(1));
+  }
+
+  {
+    auto memo = neulib::Memoize(fn2);
+    ASSERT_EQ(1, memo("x"));
+    ASSERT_EQ(1, memo("x"));
+    ASSERT_EQ(2, memo("xy"));
   }
 
   {

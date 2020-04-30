@@ -6,6 +6,7 @@
 #include <mutex>
 #include <tuple>
 #include <functional>
+#include <memory>
 
 namespace neulib
 {
@@ -46,10 +47,6 @@ typename ToUnsignedType<T>::type UnsignedCrop(const T &v)
 
 std::string ToString(const void *p);
 
-namespace {
-std::mutex memoize_mutex;
-}
-
 template<typename T>
 inline T ClipValue(const T &v, const T &lower, const T&upper)
 {
@@ -74,16 +71,37 @@ inline bool ClipRange(const T &lower, const T&upper, T &x0, T &x1)
   return false;
 }
 
-template <typename T, typename... Args>
-std::function<T(Args...)> Memoize(T (*fn)(Args...))
+template <typename T, typename... ArgTypes>
+std::function<T(ArgTypes...)> Memoize(T (*fn)(ArgTypes...))
 {
-  std::map<std::tuple<Args...>, T> cache;
-  return [fn, cache](Args... args) mutable -> T {
-    std::lock_guard<std::mutex> guard(memoize_mutex);
+  std::shared_ptr<std::mutex> mutex(new std::mutex);
+  std::map<std::tuple<ArgTypes...>, T> cache;
+  return [fn, cache, mutex](ArgTypes... args) mutable -> T {
+    std::lock_guard<std::mutex> guard(*mutex);
+
     auto argTuple = std::make_tuple(args...);
+
     auto memoized = cache.find(argTuple);
     if (memoized == cache.end()) {
       return (cache[argTuple] = fn(args...));
+    } else {
+      return memoized->second;
+    }
+  };
+}
+
+//A convenient function for const-referenced parameters, which can break Memoize.
+template <typename T, typename A>
+std::function<T(const A&)> SingleConstParameterMemoize(T (*fn)(const A&))
+{
+  std::map<A, T> cache;
+  std::shared_ptr<std::mutex> mutex(new std::mutex);
+  return [fn, cache, mutex](const A &key) mutable -> T {
+    std::lock_guard<std::mutex> guard(*mutex);
+
+    auto memoized = cache.find(key);
+    if (memoized == cache.end()) {
+      return (cache[key] = fn(key));
     } else {
       return memoized->second;
     }
