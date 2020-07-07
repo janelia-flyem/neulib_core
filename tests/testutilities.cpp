@@ -154,6 +154,34 @@ TEST(core, StringBuilder)
         append(":more:").append(uint64_t(12345678910ull));
     ASSERT_EQ("test:a0012345678910:more:12345678910", str);
   }
+
+  {
+    std::string str =
+      neulib::StringBuilder("from test from").replace("from", "to");
+    ASSERT_EQ("to test to", str);
+
+    str =
+      neulib::StringBuilder("from test from").replace("from", "");
+    ASSERT_EQ(" test ", str);
+
+    str =
+      neulib::StringBuilder("from test from").replace("", "to");
+    ASSERT_EQ("from test from", str);
+  }
+
+  {
+    std::string str = neulib::StringBuilder("[$]_[$]/[$]").arg(1).arg("test").arg(1.5f);
+    ASSERT_EQ("1_test/1.5", str);
+
+    str = neulib::StringBuilder("[$]_[$]/[$]").arg(1).arg("test");
+    ASSERT_EQ("1_test/[$]", str);
+
+    str = neulib::StringBuilder("[$]_[\\$]/[$]").arg(1).arg("test");
+    ASSERT_EQ("1_[\\$]/test", str);
+
+    str = neulib::StringBuilder("[$]_[\\$]/[$]").arg(1).arg("test").argend();
+    ASSERT_EQ("1_[$]/test", str);
+  }
 }
 
 TEST(core, SharedResroucePool)

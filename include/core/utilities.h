@@ -11,6 +11,12 @@
 namespace neulib
 {
 
+template <typename...>
+struct voider { using type = void; };
+
+template <typename... T>
+using void_t = typename voider<T...>::type;
+
 template <typename T>
 void Assign(T *out, const T &v)
 {
