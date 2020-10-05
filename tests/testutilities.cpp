@@ -137,6 +137,11 @@ TEST(core, StringBuilder)
   }
 
   {
+    std::string str = neulib::StringBuilder("test") << ":a" << 1;
+    ASSERT_EQ("test:a1", str);
+  }
+
+  {
     std::string str =
         neulib::StringBuilder("test").append(":a").append(int64_t(12345678910ll), 3);
     ASSERT_EQ("test:a12345678910", str);

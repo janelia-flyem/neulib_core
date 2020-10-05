@@ -43,6 +43,9 @@ public:
 
   StringBuilder& argend();
 
+  template<typename T>
+  StringBuilder& operator<< (const T &v);
+
 private:
   std::string m_result;
   static const char* PLACE_MARKER;
@@ -65,6 +68,13 @@ StringBuilder& StringBuilder::arg(const T &v)
   stream << v;
 
   return arg(stream.str());
+}
+
+template<typename T>
+StringBuilder& StringBuilder::operator<< (const T &v)
+{
+  append(v);
+  return *this;
 }
 
 }
