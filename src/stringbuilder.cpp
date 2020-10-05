@@ -1,5 +1,6 @@
 #include "core/stringbuilder.h"
 
+#include <cstring>
 #include <sstream>
 
 const char* neulib::StringBuilder::PLACE_MARKER = "[$]";
